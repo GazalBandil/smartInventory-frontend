@@ -27,21 +27,7 @@ const UserActivityLog = () => {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
 
-    if (token) {
-      try {
-        const decodedToken = decode(token);
-        const username = decodedToken.username; 
-        fetchLogs(username);
-      } catch (error) {
-        console.error("Error decoding token:", error);
-      }
-    } else {
-      console.error("No token found. User is not logged in.");
-    }
-  }, []); 
 
   // --------------------------------------------Handle input changes----------------------------------------
   const handleChange = (e) => {

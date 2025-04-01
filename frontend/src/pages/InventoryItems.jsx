@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {jwtDecode} from "jwt-decode"; 
 
 
 const InventoryItems = () => {
@@ -20,6 +21,20 @@ const InventoryItems = () => {
     supplierId: "",
   });
 
+  
+// to get the username from the token
+  const getUserName = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+ 
+    try {
+      const decodedToken = jwtDecode(token);
+      return decodedToken.sub ;
+    } catch (error) {
+      console.error("Invalid token:", error);
+      return null;
+    }
+  };
 
 
   // ---------------------Fetch all products-------------------------------------------------
@@ -52,9 +67,7 @@ const InventoryItems = () => {
       console.error("Error searching product:", error);
     }
   };
-  const getUserName = () => {
-    return localStorage.getItem("username") || "defaultUser"; 
-  };
+
 
 // --------------------------------------------------handle add products feature logic -----------------------------------
   const handleAddProduct = async () => {
