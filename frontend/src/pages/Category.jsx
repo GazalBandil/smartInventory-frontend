@@ -1,13 +1,30 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import CategoryCard from "../components/Categorycard.jsx"
+import { jwtDecode } from "jwt-decode";
 
 const Category = () => {
   const [categories, setCategories] = useState([]);
   const [showCreatePopup, setShowCreatePopup] = useState(false);
   const [newCategory, setNewCategory] = useState("");
 
-  // Fetch all categories
+
+    
+  // to get the username from the token
+    const getUserName = () => {
+      const token = localStorage.getItem("token");
+      if (!token) return null;
+   
+      try {
+        const decodedToken = jwtDecode(token);
+        return decodedToken.sub ;
+      } catch (error) {
+        console.error("Invalid token:", error);
+        return null;
+      }
+    };
+
+  //----------------------------------------------------------------------- Fetch all categories----------------------------------------------------------------------------
   const fetchCategories = async () => {
     try {
       const response = await axios.get("http://localhost:8080/category/all-category");
@@ -21,10 +38,16 @@ const Category = () => {
     fetchCategories();
   }, []);
 
+  // ---------------------------------------- ---------------------Create a new category-------------------------------------------------------------------------------------
   // Create a new category
   const handleCreateCategory = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/category/add-category", { name: newCategory });
+      const username = getUserName();
+      const response = await axios.post("http://localhost:8080/category/add-category", { name: newCategory },
+        {  params: { username },
+                headers: {
+                  "Content-Type": "application/json",
+        },});
       setCategories([...categories, response.data]);
       setNewCategory("");
       setShowCreatePopup(false);
@@ -33,6 +56,8 @@ const Category = () => {
       console.error("Error creating category:", error);
     }
   };
+  
+  // --------------------------------------------------------UI------------------------------------------------------------------------------------------------------------
 
   return (
     <div className="fixed left-64 top-14 w-[calc(100%-64px)] h-[calc(100vh-14px)] overflow-y-scroll  p-6 bg-gray-100">
@@ -51,7 +76,7 @@ const Category = () => {
         </button>
       </div>
 
-      {/* Category List */}
+      {/*-------------------------------------------------------------------- Category List---------------------------------------------------------------------------------- */}
       <div className="grid grid-cols-3 gap-4">
         {categories.map((category) => (
           <CategoryCard key={category.id} category={category} onUpdate={fetchCategories} onDelete={fetchCategories} />

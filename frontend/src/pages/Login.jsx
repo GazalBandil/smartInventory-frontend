@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom"
 
 export default function Login() {
   const [activeTab, setActiveTab] = useState("login"); // "login" or "register"
-  const [role, setRole] = useState("user"); // "admin" or "user"
+  const [roles, setRoles] = useState("USER"); // "admin" or "user"
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -36,17 +36,19 @@ const handleLogin = async (e) => {
     const token = response.data;
     const decodedToken = JSON.parse(atob(token.split(".")[1]));
     const userRole = decodedToken.role;
-    alert("Successfully Logged in");
-     console.log(userRole);
+ 
+    console.log(userRole);
     localStorage.setItem("token", token); 
     localStorage.setItem("isAuthenticated", "true");
     localStorage.setItem("role", userRole);
 
     if (userRole === "ADMIN") {
       console.log("User is an Admin!");
+      alert("Successfully Logged in as ADMIN");
       navigate("/"); 
     } else {
       console.log("User is a regular user");
+      alert("Successfully Logged in as USER");
       navigate("/");
     }
 
@@ -88,29 +90,11 @@ const handleLogin = async (e) => {
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl">
         {activeTab === "login" ? (
           <>
-            {/* Tabs */}
-            <div className="flex mb-6 gap-5 border-b-3">
-              <button
-                className={`flex-1 bg-white shadow-md pb-2 text-lg font-bold text-center transition-all duration-300 ${
-                  role === "admin"
-                    ? "border-b-4 border-blue-500 text-blue-700"
-                    : "text-gray-500 hover:text-blue-500"
-                }`}
-                onClick={() => setRole("admin")}
-              >
-                ADMIN
-              </button>
-              <button
-                className={`flex-1 pb-2 bg-white shadow-md text-lg font-bold text-center transition-all duration-300 ${
-                  role === "user"
-                    ? "border-b-4 border-blue-500 text-blue-700"
-                    : "text-gray-500 hover:text-blue-500"
-                }`}
-                onClick={() => setRole("user")}
-              >
-                USER
-              </button>
-            </div>
+           <div className="flex justify-center items-center mb-6">
+              <p className="border-b-4 border-blue-500 text-center font-bold text-3xl text-blue-700 pb-2 tracking-wide">
+                  LOGIN
+              </p>
+           </div>
 
             {/* Login Form */}
             <form className="space-y-5 " onSubmit={handleLogin}>
@@ -140,12 +124,12 @@ const handleLogin = async (e) => {
               <button
                type = "submit"
                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition font-semibold">
-                {role === "admin" ? "Login as Admin" : "Login as User"}
+                Login
               </button>
             </form>
 
             {/* Show for USER */}
-            {role === "user" && (
+            {roles === "USER" && (
               <p className="mt-4 text-center text-gray-600">
                 Not a user?{" "}
                 <span

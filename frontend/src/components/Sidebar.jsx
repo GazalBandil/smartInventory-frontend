@@ -1,21 +1,50 @@
 import axios from "axios";
 import { useNavigate ,NavLink } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const Sidebar = () => {
   const navigate = useNavigate();
 
+   // to get the username from the token
+      const getUserName = () => {
+        const token = localStorage.getItem("token");
+        if (!token) return null;
+     
+        try {
+          const decodedToken = jwtDecode(token);
+          return decodedToken.sub ;
+        } catch (error) {
+          console.error("Invalid token:", error);
+          return null;
+        }
+      };
+  
+      // -------------------------------------------------------------------Handle logout ------------------------------------------------------------
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:8080/auth/logout");
-      localStorage.removeItem("isAuthenticated");
-      alert("Successfully logged out");
-      navigate("/login");
-      window.location.reload();
+        const username = getUserName(); 
+        if (!username) {
+            alert("Username not found, unable to log out.");
+            return;
+        }
+        console.log("Logging out user:", username); 
+        await axios.post("http://localhost:8080/auth/logout", null, {
+            params: { username },
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        localStorage.removeItem("isAuthenticated");
+        alert("Successfully logged out");
+        navigate("/login");
+        window.location.reload();
     } catch (error) {
-      alert("Logout failed. Try again.");
+        console.error("Logout failed:", error.response?.data || error.message);
+        alert("Logout failed. Try again.");
     }
-  };
+};
 
+// -----------------------------------------------------------------------------ui--------------------------------------------------------------------------
   return (
     <div className="w-64 h-screen fixed top-14 left-0 bg-slate-200 text-white p-6 shadow-lg flex flex-col justify-between">
       <div>

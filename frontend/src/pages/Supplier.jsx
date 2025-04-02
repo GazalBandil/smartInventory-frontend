@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SupplierCard from "../components/SupplierCard.jsx";
+import { jwtDecode } from "jwt-decode";
 
 const Supplier = () => {
   const [activeTab, setActiveTab] = useState("all-suppliers");
@@ -12,12 +13,28 @@ const Supplier = () => {
     address: "",
   });
 
+
+  // to get the username from the token
+  const getUserName = () => {
+    const token = localStorage.getItem("token");
+       if (!token) return null;
+       
+       try {
+            const decodedToken = jwtDecode(token);
+            return decodedToken.sub ;
+       } catch (error) {
+            console.error("Invalid token:", error);
+            return null;
+       }
+  };
+
   useEffect(() => {
     if (activeTab === "all-suppliers") {
       fetchSuppliers();
     }
   }, [activeTab]);
 
+// ----------------------------------------------------------------------------Fetch Supplier-----------------------------------------------------------------
   const fetchSuppliers = async () => {
     try {
       const res = await axios.get("http://localhost:8080/supplier/all-supplier");
@@ -28,14 +45,21 @@ const Supplier = () => {
     }
   };
 
+  // -----------------------------------------------------------------------------Add Supplier ---------------------------------------------------------------------
   const handleInputChange = (e) => {
     setNewSupplier({ ...newSupplier, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const username = getUserName(); 
     try {
-      const res = await axios.post("http://localhost:8080/supplier/add-supplier", newSupplier);
+      const res = await axios.post(
+        "http://localhost:8080/supplier/add-supplier",
+        newSupplier,
+        {
+          params: { username },
+        }
+      );
       setSuppliers((prev) => [...prev, res.data]);
       setNewSupplier({ name: "", contact_info: "", address: "" });
       setActiveTab("all-suppliers");
@@ -44,7 +68,9 @@ const Supplier = () => {
       console.error("Error adding supplier:", error);
     }
   };
+  
 
+  // ---------------------------------------------------------------------------------Update Supplier -------------------------------------------------------------------------
   const handleUpdateSupplier = async (supplier_id, updatedData) => {
     try {
       await axios.put(`http://localhost:8080/supplier/update/${supplier_id}`, updatedData);
@@ -56,6 +82,7 @@ const Supplier = () => {
     }
   };
 
+  // // -----------------------------------------------------------------------------------Delete Supplier------------------------------------------------------------------------
   const handleDeleteSupplier = async (supplier_id) => {
     try {
       await axios.delete(`http://localhost:8080/supplier/delete/${supplier_id}`);
@@ -64,6 +91,8 @@ const Supplier = () => {
       console.error("Error deleting supplier:", error);
     }
   };
+
+  // ------------------------------------------------------------------------UI---------------------------------------------------------------------------------------------------> 
 
   return (
     <div className="fixed left-64 top-14 w-[calc(100%-64px)] h-[calc(100vh-14px)] p-6 overflow-scroll bg-gray-100">
@@ -95,11 +124,11 @@ const Supplier = () => {
           {suppliers.length > 0 ? (
             suppliers.map((supplier) => (
               <SupplierCard
-                key={supplier.supplier_id}
-                supplier={supplier}
-                onUpdate={handleUpdateSupplier}
-                onDelete={handleDeleteSupplier}
-              />
+              key={supplier.supplier_id}
+              supplier={supplier}
+              onUpdate={handleUpdateSupplier}
+              onDelete={handleDeleteSupplier}
+            />
             ))
           ) : (
             <p className="text-center text-gray-600">No suppliers found.</p>
