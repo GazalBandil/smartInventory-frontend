@@ -28,7 +28,7 @@ SmartInventory is a **responsive web application** that provides an intuitive UI
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Frontend Framework:** React.js, Vite, React Router 
 - **Styling:** Tailwind CSS
@@ -66,7 +66,7 @@ REACT_APP_API_URL=http://localhost:8080
 
 ---
 
-## 📌 Usage Guide
+##  Usage Guide
 
 ### 🔹 Admin Credentials (Default)
 - **Email:** antrabandil@nucleusteq.com
