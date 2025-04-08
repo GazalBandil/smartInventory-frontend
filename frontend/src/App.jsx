@@ -7,7 +7,6 @@ import Supplier from "./pages/Supplier.jsx";
 import Category from "./pages/Category.jsx";
 import InventoryItems from "./pages/InventoryItems.jsx";
 import Report from "./pages/Reports.jsx";
-import StockMovement from "./pages/StockMovement.jsx";
 import UserActivityLog from "./pages/UserActivityLog.jsx";
 import Header from "./components/Header.jsx";
 
@@ -47,7 +46,6 @@ function App() {
                 <Route path="/category" element={<ProtectedRoute element={<Category />} allowedRoles={["USER", "ADMIN"]} />} />
                 <Route path="/inventory-items" element={<ProtectedRoute element={<InventoryItems />} allowedRoles={["USER", "ADMIN"]} />} />
                 <Route path="/report" element={<ProtectedRoute element={<Report />} allowedRoles={["USER", "ADMIN"]} />} />
-                <Route path="/stock-movement" element={<ProtectedRoute element={<StockMovement />} allowedRoles={["USER", "ADMIN"]} />} />
                 <Route path="/user-activity-log" element={<ProtectedRoute element={<UserActivityLog />} allowedRoles={["USER", "ADMIN"]} />} />
                 <Route path="/supplier" element={<ProtectedRoute element={<Supplier />} allowedRoles={["USER","ADMIN"]} />} />
 

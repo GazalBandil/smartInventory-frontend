@@ -215,6 +215,7 @@ const handleLogin = async (e) => {
                   type="tel"
                   name="contactNo"
                   placeholder="Enter your contact number"
+                  maxLength={10}
                   required
                   className="w-full px-4 py-2 bg-gray-100 text-slate-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   value={formData.contactNo}

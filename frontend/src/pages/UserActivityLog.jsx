@@ -218,6 +218,7 @@ const UserActivityLog = () => {
                 type="password"
                 name="password"
                 placeholder="Enter your password"
+                maxLength={10}
                 required
                 className="w-full px-4 py-2 bg-gray-100 border text-slate-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 value={formData.password}

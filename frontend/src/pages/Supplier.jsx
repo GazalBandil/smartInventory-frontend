@@ -153,6 +153,7 @@ const Supplier = () => {
               type="text"
               name="contact_info"
               value={newSupplier.contact_info}
+              maxLength={10}
               onChange={handleInputChange}
               className="w-full p-2 bg-slate-100 text-gray-700 border rounded-md"
               required

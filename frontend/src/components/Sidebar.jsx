@@ -48,7 +48,7 @@ const Sidebar = () => {
   return (
     <div className="w-64 h-screen fixed top-14 left-0 bg-slate-200 text-white p-6 shadow-lg flex flex-col justify-between">
       <div>
-        <h2 className="text-2xl font-bold text-blue-600 mb-8 text-center">Admin Panel</h2>
+        <h2 className="text-2xl font-bold text-blue-600 mb-8 text-center">Smart Inventory System</h2>
         <nav>
           <ul className="space-y-4">
             {[
@@ -57,7 +57,6 @@ const Sidebar = () => {
               { name: "Category", path: "/category" },
               { name: "Inventory Items", path: "/inventory-items" },
               { name: "Report", path: "/report" },
-              { name: "Stock Movement", path: "/stock-movement" },
               { name: "User Activity Log", path: "/user-activity-log" },
             ].map((item) => (
               <li key={item.path}>

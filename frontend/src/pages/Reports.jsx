@@ -54,9 +54,9 @@ const Reports = () => {
       return;
     }
 
-    const headers = ["Movement ID,Product ID,User ID,Quantity,Type,Timestamp"];
+    const headers = ["Movement ID,Product ID,Product Name,Quantity,Type,Timestamp"];
     const rows = stockMovements.map((movement) =>
-      `${movement.movement_id},${movement.item_id},${movement.user_id},${movement.quantity_changed},${movement.movement_type},${new Date(movement.timestamp).toLocaleString()}`
+      `${movement.movement_id},${movement.item_id},${movement.product_name},${movement.quantity_changed},${movement.movement_type},${new Date(movement.timestamp).toLocaleString()}`
     );
 
     const csvContent = [headers, ...rows].join("\n");
@@ -110,6 +110,7 @@ const Reports = () => {
               <tr className="bg-gray-800 text-white">
                 <th className="border p-2">Movement ID</th>
                 <th className="border p-2">Product ID</th>
+                <th className="border p-2">Product Name</th>
                 <th className="border p-2">Quantity</th>
                 <th className="border p-2">Type</th>
                 <th className="border p-2">Timestamp</th>
@@ -121,6 +122,7 @@ const Reports = () => {
                   <tr key={movement.movement_id || index} className="text-center border-b">
                     <td className="border text-gray-600 p-2">{movement.movement_id}</td>
                     <td className="border  text-gray-600 p-2">{movement.item_id}</td>
+                    <td className="border  text-gray-600 p-2">{movement.product_name}</td>
                     <td className="border  text-gray-600 p-2">{movement.quantity_changed}</td>
                     <td className="border  text-gray-600 p-2">{movement.movement_type}</td>
                     <td className="border  text-gray-600 p-2">{new Date(movement.timestamp).toLocaleString()}</td>
