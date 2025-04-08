@@ -42,7 +42,7 @@ function App() {
             <div className="flex-1 p-6 overflow-y-auto">
               <Routes>
                 {/* USER & ADMIN can access these routes */}
-                <Route path="/" element={<ProtectedRoute element={<Dashboard />} allowedRoles={["USER", "ADMIN"]} />} />
+                <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} allowedRoles={["USER", "ADMIN"]} />} />
                 <Route path="/category" element={<ProtectedRoute element={<Category />} allowedRoles={["USER", "ADMIN"]} />} />
                 <Route path="/inventory-items" element={<ProtectedRoute element={<InventoryItems />} allowedRoles={["USER", "ADMIN"]} />} />
                 <Route path="/report" element={<ProtectedRoute element={<Report />} allowedRoles={["USER", "ADMIN"]} />} />
@@ -50,7 +50,7 @@ function App() {
                 <Route path="/supplier" element={<ProtectedRoute element={<Supplier />} allowedRoles={["USER","ADMIN"]} />} />
 
                 {/* Catch-All */}
-                <Route path="*" element={<Navigate to="/" />} />
+                <Route path="*" element={<Navigate to="/dashboard" />} />
               </Routes>
             </div>
           </div>
